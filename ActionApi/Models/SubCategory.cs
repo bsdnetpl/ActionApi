@@ -7,6 +7,6 @@
         public bool export { get; set; }
         public string description { get; set; }
         public int margin { get; set; }
-        public string idMainCategory { get; set; }
+        public string idMainCategory { get; set; } = string.Empty;
     }
 }

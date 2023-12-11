@@ -10,12 +10,19 @@
         public double priceNet { get; set; }
         public int vat { get; set; }
         public string pkwiu { get; set; }
-        public int available { get; set;}
-        public string EAN { get; set;}
-        public string manufacturerPartNumber { get; set;}
+        public int available { get; set; }
+        public string EAN { get; set; }
+        public string manufacturerPartNumber { get; set; }
         public int sizeWidth { get; set; }
         public int sizeHeight { get; set; }
         public int sizeLength { get; set; }
         public int weight { get; set; }
+        public string description { get; set; }
+        public string urlImg1 { get; set; }
+        public string urlImg2 { get; set; } = string.Empty;
+        public string urlImg3 { get; set; } = string.Empty;
+        public string urlImg4 { get; set; } = string.Empty;
+        public string urlImg5 { get; set; } = string.Empty;
     }
+
 }
