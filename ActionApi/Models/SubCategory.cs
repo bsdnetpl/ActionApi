@@ -1,7 +1,10 @@
-﻿namespace ActionApi.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ActionApi.Models
 {
     public class SubCategory
     {
+        [Key]
         public string id { get; set; }
         public string name { get; set; }
         public bool export { get; set; }
