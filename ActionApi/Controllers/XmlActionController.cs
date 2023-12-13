@@ -20,6 +20,11 @@ namespace ActionApi.Controllers
             return Ok(_serviceXmlAction.AddMainCategory());
 
         }
+        [HttpPost("AddSubCategories")]
+        public ActionResult<bool> AddSubCategory()
+        {
+            return Ok(_serviceXmlAction.GetSubCategory());
+        }
 
     }
 }

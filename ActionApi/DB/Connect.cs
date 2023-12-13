@@ -13,5 +13,10 @@ namespace ActionApi.DB
         public DbSet<Product> product { get; set; }
         public DbSet<SubCategory> subCategories { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<MainCategory>().HasKey(k => k.ids);     
+        }
     }
 }

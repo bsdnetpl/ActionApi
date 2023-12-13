@@ -1,7 +1,9 @@
-﻿namespace ActionApi.Service
+﻿
+namespace ActionApi.Service
 {
     public interface IServiceXmlAction
     {
-        bool AddMainCategory();
+        Task<bool> AddMainCategory();
+        Task<bool> GetSubCategory();
     }
 }

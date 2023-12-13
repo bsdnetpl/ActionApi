@@ -25,23 +25,42 @@ namespace ActionApi.Service
         }
 
 
-        public bool AddMainCategory()
+        public async Task<bool> AddMainCategory()
         {
             _connect.Database.ExecuteSqlRaw("TRUNCATE TABLE mainCategories");
-            _connect.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.mainCategories ON");
+
             MainCategory mainCat = new MainCategory();
-           
+
             foreach (XmlNode node in mainCategory)
             {
-              
-                mainCat.id = node.Attributes["id"].Value;
+                mainCat.ids = new Guid();
+                mainCat.idntification = node.Attributes["id"].Value;
                 mainCat.name = node.Attributes["name"].Value;
                 mainCat.description = node.Attributes["name"].Value;
-                _connect.mainCategories.Add(mainCat);
-                _connect.SaveChanges();
-                
+                mainCat.margin = 25;
+                mainCat.export = true;
+                await _connect.mainCategories.AddAsync(mainCat);
+                await _connect.SaveChangesAsync();
+
             }
-            _connect.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.mainCategories OFF");
+            return true;
+        }
+        public async Task<bool> GetSubCategory()
+        {
+            SubCategory subCat = new SubCategory();
+            foreach (XmlNode node in mainCategory)
+            {
+                for(int i=0; i > node.ChildNodes.Count; i++)
+                {
+                    subCat.idMainCategory = node.Attributes["id"].Value;
+                    subCat.name = node.ChildNodes[i].Attributes["name"].Value;
+                    subCat.export = true;
+                    subCat.margin = Convert.ToInt16(node.Attributes["margin"].Value);
+                    subCat.description = node.ChildNodes[i].Attributes["name"].Value;
+                    await _connect.subCategories.AddAsync(subCat);
+                    await _connect.SaveChangesAsync();
+                }
+            }
             return true;
         }
     }
