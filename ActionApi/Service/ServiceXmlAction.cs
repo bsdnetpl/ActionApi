@@ -57,8 +57,8 @@ namespace ActionApi.Service
                     subCat.export = true;
                     subCat.margin = Convert.ToInt16(node.Attributes["margin"].Value);
                     subCat.description = node.ChildNodes[i].Attributes["name"].Value;
-                    //await _connect.subCategories.AddAsync(subCat);
-                    //await _connect.SaveChangesAsync();
+                    await _connect.subCategories.AddAsync(subCat);
+                    await _connect.SaveChangesAsync();
                 }
             }
             return true;
