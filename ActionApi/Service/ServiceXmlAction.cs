@@ -45,20 +45,29 @@ namespace ActionApi.Service
             }
             return true;
         }
-        public async Task<bool> GetSubCategory()
+        public async Task<bool> AddSubCategory()
         {
+            _connect.Database.ExecuteSqlRaw("TRUNCATE TABLE subCategories");
             SubCategory subCat = new SubCategory();
             foreach (XmlNode node in mainCategory)
             {
-                for(int i=0; i > node.ChildNodes.Count; i++)
+              XmlNode subCategoriesNode = node.SelectSingleNode("SubCategories");
+
+                if (subCategoriesNode != null)
+                {
+                    return false;
+                }
+
+                foreach (XmlNode subCategoryNode in subCategoriesNode.ChildNodes)
                 {
                     subCat.idMainCategory = node.Attributes["id"].Value;
-                    subCat.name = node.ChildNodes[i].Attributes["name"].Value;
+                    subCat.name = subCategoryNode.Attributes["name"].Value;
+                    subCat.id = subCategoryNode.Attributes["id"].Value;
                     subCat.export = true;
-                    subCat.margin = Convert.ToInt16(node.Attributes["margin"].Value);
-                    subCat.description = node.ChildNodes[i].Attributes["name"].Value;
+                    subCat.margin = 25;
+                    subCat.description = subCategoryNode.Attributes["name"].Value;
                     await _connect.subCategories.AddAsync(subCat);
-                    await _connect.SaveChangesAsync();
+                    _connect.SaveChanges();
                 }
             }
             return true;

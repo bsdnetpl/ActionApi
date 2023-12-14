@@ -23,7 +23,7 @@ namespace ActionApi.Controllers
         [HttpPost("AddSubCategories")]
         public ActionResult<bool> AddSubCategory()
         {
-            return Ok(_serviceXmlAction.GetSubCategory());
+            return Ok(_serviceXmlAction.AddSubCategory);
         }
 
     }
