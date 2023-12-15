@@ -74,6 +74,7 @@ namespace ActionApi.Service
         }
         public async Task<bool> AddProducer()
         {
+            _connect.Database.ExecuteSqlRaw("TRUNCATE TABLE producers");
             Producer producer = new Producer();
             foreach (XmlNode Producer in producers)
             {
