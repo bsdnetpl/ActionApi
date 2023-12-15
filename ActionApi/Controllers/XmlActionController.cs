@@ -25,6 +25,10 @@ namespace ActionApi.Controllers
         {
             return Ok(_serviceXmlAction.AddSubCategory);
         }
-
+        [HttpPost("AddProducts")]
+        public ActionResult<bool> AddProducts()
+        {
+            return Ok(_serviceXmlAction.AddProduct());
+        }
     }
 }

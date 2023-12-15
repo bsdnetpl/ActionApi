@@ -10,17 +10,17 @@ namespace ActionApi.Service
         private readonly Connect _connect;
         private readonly XmlDocument doc = new XmlDocument();
         private readonly XmlNodeList mainCategory;
-        private readonly XmlNodeList subCategory;
-        private readonly XmlNodeList producer;
-        private readonly XmlNodeList product;
+        //private readonly XmlNodeList subCategory;
+        private readonly XmlNodeList producers;
+        private readonly XmlNodeList products;
 
         public ServiceXmlAction(Connect connect)
         {
             doc.Load("xml_action_big.xml");
             mainCategory = doc.GetElementsByTagName("MainCategory");
-            subCategory = doc.GetElementsByTagName("SubCategory");
-            producer = doc.GetElementsByTagName("Producer");
-            product = doc.GetElementsByTagName("Product");
+            // subCategory = doc.GetElementsByTagName("SubCategory");
+            producers = doc.GetElementsByTagName("Producer");
+            products = doc.GetElementsByTagName("Product");
             _connect = connect;
         }
 
@@ -51,7 +51,7 @@ namespace ActionApi.Service
             SubCategory subCat = new SubCategory();
             foreach (XmlNode node in mainCategory)
             {
-              XmlNode subCategoriesNode = node.SelectSingleNode("SubCategories");
+                XmlNode subCategoriesNode = node.SelectSingleNode("SubCategories");
 
                 if (subCategoriesNode != null)
                 {
@@ -72,5 +72,91 @@ namespace ActionApi.Service
             }
             return true;
         }
+        public async Task<bool> AddProducer()
+        {
+            Producer producer = new Producer();
+            foreach (XmlNode Producer in producers)
+            {
+                producer.id = Producer.Attributes["id"].Value;
+                producer.name = Producer.Attributes["name"].Value;
+                await _connect.producers.AddAsync(producer);
+                _connect.SaveChanges();
+            }
+            return true;
+        }
+        public async Task<bool> AddProduct()
+        {
+            _connect.Database.ExecuteSqlRaw("TRUNCATE TABLE product");
+            Product product = new Product();
+            
+            foreach (XmlNode prod in products)
+            {
+                if (Convert.ToInt32(prod.Attributes["available"].Value) == 0)
+                {
+                    continue;
+                }
+                product.id = prod.Attributes["id"].Value;
+                product.EAN = prod.Attributes["EAN"].Value;
+                product.producer = prod.Attributes["producer"].Value;
+                product.name = prod.Attributes["name"].Value;
+                product.categoryId = prod.Attributes["categoryId"].Value;
+                product.warranty = prod.Attributes["warranty"].Value;
+                product.priceNet = Convert.ToDouble(prod.Attributes["priceNet"].Value.Replace(".", ","));
+                product.vat = Convert.ToInt32(prod.Attributes["vat"].Value);
+                product.pkwiu = prod.Attributes["pkwiu"].Value;
+                product.available = Convert.ToInt32(prod.Attributes["available"].Value);
+                product.manufacturerPartNumber = prod.Attributes["manufacturerPartNumber"].Value;
+                product.sizeWidth = Convert.ToInt32(prod.Attributes["sizeWidth"].Value);
+                product.sizeLength = Convert.ToInt32(prod.Attributes["sizeLength"].Value);
+                product.sizeHeight = Convert.ToInt32(prod.Attributes["sizeHeight"].Value);
+                product.weight = Convert.ToInt32(prod.Attributes["weight"].Value);
+
+                XmlNodeList ImageNode = prod.SelectNodes("Images/Image");
+                int licznik = 0;
+                foreach (XmlNode img in ImageNode)
+                {
+                    if (licznik >= 5)
+                    {
+                        break;
+                    }
+                    switch (licznik)
+                    {
+                        case 0:
+                            product.urlImg1 = img.Attributes["url"].Value.Substring(8);
+                            break;
+                        case 1:
+                            product.urlImg2 = img.Attributes["url"].Value.Substring(8);
+                            break;
+                        case 2:
+                            product.urlImg3 = img.Attributes["url"].Value.Substring(8);
+                            break;
+                        case 3:
+                            product.urlImg4 = img.Attributes["url"].Value.Substring(8);
+                            break;
+                        case 4:
+                            product.urlImg5 = img.Attributes["url"].Value.Substring(8);
+                            break;
+                    }
+                    licznik++;
+                }
+                foreach (XmlNode ValueNode in prod.SelectNodes("TechnicalSpecification/Section/Attributes/Attribute"))
+                {
+                    string Atribute = ValueNode.Attributes["name"].Value;
+                    foreach (XmlNode ValueNode2 in ValueNode.SelectNodes("Values/Value"))
+                    {
+                        string ValueAtrr = ValueNode2.Attributes["Name"].Value;
+                        product.description += $"{Atribute} : {ValueAtrr} ";
+
+                    }
+                }
+                
+                await _connect.product.AddAsync(product);
+                _connect.SaveChanges();
+                product.description = "";
+            }
+
+            return true;
+        }
+
     }
 }
