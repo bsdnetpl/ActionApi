@@ -67,7 +67,7 @@ namespace ActionApi.Service
                     subCat.margin = 25;
                     subCat.description = subCategoryNode.Attributes["name"].Value;
                     await _connect.subCategories.AddAsync(subCat);
-                    _connect.SaveChanges();
+                    await _connect.SaveChangesAsync();
                 }
             }
             return true;
@@ -81,7 +81,7 @@ namespace ActionApi.Service
                 producer.id = Producer.Attributes["id"].Value;
                 producer.name = Producer.Attributes["name"].Value;
                 await _connect.producers.AddAsync(producer);
-                _connect.SaveChanges();
+                await _connect.SaveChangesAsync();
             }
             return true;
         }
@@ -93,6 +93,10 @@ namespace ActionApi.Service
             foreach (XmlNode prod in products)
             {
                 if (Convert.ToInt32(prod.Attributes["available"].Value) == 0)
+                {
+                    continue;
+                }
+                if(prod.Attributes["name"].Value.Contains("WYPRZEDA"))
                 {
                     continue;
                 }
@@ -152,7 +156,7 @@ namespace ActionApi.Service
                 }
                 
                 await _connect.product.AddAsync(product);
-                _connect.SaveChanges();
+                await _connect.SaveChangesAsync();
                 product.description = "";
             }
 

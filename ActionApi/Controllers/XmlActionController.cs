@@ -15,23 +15,23 @@ namespace ActionApi.Controllers
             _serviceXmlAction = serviceXmlAction;
         }
         [HttpPost("AddMainCategories")]
-        public ActionResult<bool>AddMainCategory()
+        public async Task<ActionResult<bool>>AddMainCategory()
         {
-            return Ok(_serviceXmlAction.AddMainCategory());
+            return Ok(await _serviceXmlAction.AddMainCategory());
 
         }
         [HttpPost("AddSubCategories")]
-        public ActionResult<bool> AddSubCategory()
+        public async Task<ActionResult<bool>>AddSubCategory()
         {
             return Ok(_serviceXmlAction.AddSubCategory);
         }
         [HttpPost("AddProducts")]
-        public ActionResult<bool> AddProducts()
+    public async Task<ActionResult<bool>>AddProducts()
         {
-            return Ok(_serviceXmlAction.AddProduct());
+            return Ok( await _serviceXmlAction.AddProduct());
         }
         [HttpPost("AddProducers")]
-        public ActionResult<bool> AddProducers()
+        public async Task<ActionResult<bool>>AddProducers()
         {
             return Ok(_serviceXmlAction.AddProducer);
         }
