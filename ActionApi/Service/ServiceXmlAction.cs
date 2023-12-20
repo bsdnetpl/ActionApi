@@ -127,19 +127,19 @@ namespace ActionApi.Service
                     switch (licznik)
                     {
                         case 0:
-                            product.urlImg1 = img.Attributes["url"].Value.Substring(8);
+                            product.urlImg1 = img.Attributes["url"].Value;
                             break;
                         case 1:
-                            product.urlImg2 = img.Attributes["url"].Value.Substring(8);
+                            product.urlImg2 = img.Attributes["url"].Value;
                             break;
                         case 2:
-                            product.urlImg3 = img.Attributes["url"].Value.Substring(8);
+                            product.urlImg3 = img.Attributes["url"].Value;
                             break;
                         case 3:
-                            product.urlImg4 = img.Attributes["url"].Value.Substring(8);
+                            product.urlImg4 = img.Attributes["url"].Value;
                             break;
                         case 4:
-                            product.urlImg5 = img.Attributes["url"].Value.Substring(8);
+                            product.urlImg5 = img.Attributes["url"].Value;
                             break;
                     }
                     licznik++;
