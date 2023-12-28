@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ActionApi.Controllers
 {
     [Route("api/[controller]")]
+    [Produces("application/json")]
     [ApiController]
     public class XmlActionController : ControllerBase
     {
@@ -31,6 +32,8 @@ namespace ActionApi.Controllers
         /// <response code="201">Returns the newly created item</response>
         /// <response code="400">If the item is null</response>
         [HttpPost("AddMainCategories")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<bool>>AddMainCategory()
         {
             return Ok(await _serviceXmlAction.AddMainCategory());
