@@ -14,6 +14,22 @@ namespace ActionApi.Controllers
         {
             _serviceXmlAction = serviceXmlAction;
         }
+        /// <summary>
+        /// Add Main Categories.
+        /// </summary>
+        /// /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Todo
+        ///     {
+        ///        "id": 1,
+        ///        "name": "Item #1",
+        ///        "isComplete": true
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Returns the newly created item</response>
+        /// <response code="400">If the item is null</response>
         [HttpPost("AddMainCategories")]
         public async Task<ActionResult<bool>>AddMainCategory()
         {

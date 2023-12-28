@@ -12,6 +12,7 @@ namespace ActionApi.Service
             client.Credentials = new NetworkCredential("user", "pass");
             client.Connect();
             client.UploadFile(fileName, fileName);//download the file by name and upload the file to the server with the same name. The file name will be generated based on the guid, a unique name
+
         }
     }
 }
